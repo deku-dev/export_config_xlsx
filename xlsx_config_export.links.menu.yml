@@ -1,0 +1,5 @@
+xlsx_config_export.export:
+  title: 'Config xlsx export'
+  description: 'Export config content types in xlsx format'
+  route_name: xlsx_config_export.export_content_types
+  parent: system.admin_config_development

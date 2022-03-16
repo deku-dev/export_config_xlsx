@@ -1,0 +1,19 @@
+xlsx_config_export.export_content_types:
+  path: '/admin/config/development/generate-xlsx-content-config'
+  defaults:
+    _form: '\Drupal\xlsx_config_export\Form\ExportContentTypes'
+    _title: 'XLSX export settings'
+  requirements:
+    _role: 'administrator'
+
+xlsx_config_export.export_node:
+  path: '/node/{node}/export_xlsx'
+  defaults:
+    _controller: '\Drupal\xlsx_config_export\Controller\ExportContentController::build'
+    _title: 'XLSX export node configs'
+  requirements:
+    _role: 'administrator'
+  options:
+    parameters:
+      node:
+        type: entity:node

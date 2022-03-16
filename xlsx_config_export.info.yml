@@ -1,0 +1,5 @@
+name: 'xlsx_config_export'
+type: module
+description: 'For export configs in xlsx file'
+core: 8.x
+package: 'Custom'

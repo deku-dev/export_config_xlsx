@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains xlsx_config_export.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function xlsx_config_export_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the xlsx_config_export module.
+    case 'help.page.xlsx_config_export':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('For export configs in xlsx file') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function xlsx_config_export_theme() {
+  return [
+    'xlsx_config_export' => [
+      'render element' => 'children',
+    ],
+  ];
+}
