@@ -21,11 +21,19 @@ class ExportContentTypes extends ConfigFormBase {
   protected $entityTypeManager;
 
   /**
+   * Cache render service.
+   *
+   * @var \Drupal\Core\Routing\RouteBuilder
+   */
+  protected $routerBuilder;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
     $instance->entityTypeManager = $container->get('entity_type.manager');
+    $instance->routerBuilder = $container->get('router.builder');
     return $instance;
   }
 
@@ -61,7 +69,6 @@ class ExportContentTypes extends ConfigFormBase {
       '#default_value' => $config->get('content_types'),
     ];
 
-
     return parent::buildForm($form, $form_state);
   }
 
@@ -71,9 +78,12 @@ class ExportContentTypes extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    // Save data.
     $this->config('xlsx_config_export.exportcontenttypes')
       ->set('content_types', $form_state->getValue('content_types'))
       ->save();
+    // Clear cache.
+    \Drupal::service("router.builder")->rebuild();
   }
 
   /**
@@ -88,7 +98,8 @@ class ExportContentTypes extends ConfigFormBase {
     try {
       $contentTypes = $this->entityTypeManager->getStorage('node_type')
         ->loadMultiple();
-    } catch (InvalidPluginDefinitionException|PluginNotFoundException $e) {
+    }
+    catch (InvalidPluginDefinitionException | PluginNotFoundException $e) {
     }
     foreach ($contentTypes as $contentType) {
       $types[$contentType->id()] = $contentType->label();

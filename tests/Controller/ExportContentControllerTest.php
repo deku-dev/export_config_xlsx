@@ -9,7 +9,6 @@ use Drupal\simpletest\WebTestBase;
  */
 class ExportContentControllerTest extends WebTestBase {
 
-
   /**
    * {@inheritdoc}
    */

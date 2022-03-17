@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_help().
@@ -32,4 +34,38 @@ function xlsx_config_export_theme() {
       'render element' => 'children',
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function xlsx_config_export_preprocess_menu_local_tasks(&$variables) {
+
+  $config = \Drupal::config('xlsx_config_export.exportcontenttypes');
+  $content_types = $config->get('content_types');
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+
+    $typeName = $node->bundle();
+
+    if ($typeName === $content_types[$typeName]) {
+      $variables['primary']['entity.node.get_xlsx_version'] = [
+        '#theme' => 'menu_local_task',
+        '#link' => [
+          'title' => t('Get xlsx Version'),
+          'url' => Url::fromRoute('xlsx_config_export.export_node', [
+            'node' => $node->id(),
+          ]),
+          'localized_options' => [
+            'attributes' => [
+              'title' => t('Get xlsx Version'),
+            ],
+          ],
+        ],
+        '#weight' => -5,
+      ];
+    }
+  }
+
 }
